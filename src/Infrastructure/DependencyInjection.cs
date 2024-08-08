@@ -13,7 +13,7 @@ namespace Infrastructure
                 options.UseLazyLoadingProxies();
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });
-           
+            services.AddScoped<IDbContextFactory<AppDbContext>, ContextFactory<AppDbContext>>();
             services.AddTransient<IApplicationDbContext>(provider => provider.GetRequiredService<IDbContextFactory<AppDbContext>>().CreateDbContext());
             
 
