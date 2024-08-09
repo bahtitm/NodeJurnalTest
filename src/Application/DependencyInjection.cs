@@ -11,7 +11,7 @@ namespace Application
             services.AddMediatR(config =>
             {
                 config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-                //config.AddOpenBehavior(typeof(CurrentInvestorBehaviour<,>));
+                
             });
             return services;
         }

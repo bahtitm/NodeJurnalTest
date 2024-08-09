@@ -1,4 +1,9 @@
-﻿using Application.Features.Users.Commands.CreateUser;
+﻿using Application.Features.Nodes.Commands.CreateNode;
+using Application.Features.Nodes.Commands.DeleteNode;
+using Application.Features.Nodes.Commands.UpdateNode;
+using Application.Features.Nodes.Queries.GetAll;
+using Application.Features.Nodes.Queries.GetDetail;
+using Application.Features.Users.Commands.CreateUser;
 using Application.Features.Users.Commands.DeleteUser;
 using Application.Features.Users.Commands.UpdateUser;
 using Application.Features.Users.Queries.GetAll;
@@ -12,31 +17,32 @@ namespace NodeJurnalTest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class UsersController : BaseController
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public class NodesController : BaseController
     {
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var dataSource = await mediator.Send(new GetAllUserQuery());
+            var dataSource = await mediator.Send(new GetAllNodeQuery());
             return Ok(dataSource.AsQueryable());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(uint id)
         {
-            return Ok(await mediator.Send(new GetDetailUserQuery(id)));
+            
+            return Ok(await mediator.Send(new GetDetailNodeQuery(id)));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateUserCommand command)
+        public async Task<IActionResult> Post([FromBody] CreateNodeCommand command)
         {
             await mediator.Send(command);
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(uint id, [FromBody] UpdateUserCommand command)
+        public async Task<IActionResult> Put(uint id, [FromBody] UpdateNodeCommand command)
         {
             if (id != command.Id)
             {
@@ -49,7 +55,7 @@ namespace NodeJurnalTest.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(uint id)
         {
-            await mediator.Send(new DeleteUserCommand(id));
+            await mediator.Send(new DeleteNodeCommand(id));
             return NoContent();
         }
     }

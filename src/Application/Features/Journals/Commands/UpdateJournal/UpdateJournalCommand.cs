@@ -2,8 +2,11 @@
 
 namespace Application.Features.Journals.Commands.UpdateJournal
 {
-    internal class UpdateJournalCommand : IRequest<JournalDto>
+    public class UpdateJournalCommand : IRequest<JournalDto>
     {
         public uint Id { get; set; }
+        public string? Text { get; set; }
+        public uint EventId { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

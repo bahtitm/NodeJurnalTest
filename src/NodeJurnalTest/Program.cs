@@ -1,15 +1,18 @@
-using NodeJurnalTest.Data;
 using Application;
 using Infrastructure;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using NodeJurnalTest.Data;
+using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 // Add services to the container.
-builder.Services.Configure<KestrelServerOptions>(config.GetSection("Kestrel"));
+//builder.Services.Configure<KestrelServerOptions>(config.GetSection("Kestrel"));
+
+
+
 builder.Services.AddApplicationCore();
 builder.Services.AddPersistence(config);
 builder.Services.AddScoped<DatabaseMigrator>();
@@ -60,6 +63,7 @@ object p = builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationSc
             ValidateIssuerSigningKey = true,
         };
     });
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -72,13 +76,17 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
 app.MapControllers();
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DatabaseMigrator>();
     await db.MigrateAsync();
 }
+app.UseExceptionHandler(builder =>
+{
+
+});
 app.Run();
 public class AuthOptions
 {

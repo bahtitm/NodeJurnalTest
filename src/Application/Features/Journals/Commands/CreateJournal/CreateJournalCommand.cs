@@ -2,7 +2,10 @@
 
 namespace Application.Features.Journals.Commands.CreateJournal
 {
-    internal class CreateJournalCommand : IRequest<JournalDto>
+    public class CreateJournalCommand : IRequest<JournalDto>
     {
+        public string? Text { get; set; }
+        public uint EventId { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

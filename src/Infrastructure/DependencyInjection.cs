@@ -15,8 +15,8 @@ namespace Infrastructure
             });
             services.AddScoped<IDbContextFactory<AppDbContext>, ContextFactory<AppDbContext>>();
             services.AddTransient<IApplicationDbContext>(provider => provider.GetRequiredService<IDbContextFactory<AppDbContext>>().CreateDbContext());
-            
 
+            
             return services;
         }
     }
